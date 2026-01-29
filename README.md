@@ -9,9 +9,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
 
-[Documentation](docs/) •
-[API Reference](docs/api/) •
-[Architecture](docs/architecture/)
 
 </div>
 
@@ -200,9 +197,6 @@ SecureTransact/
 │   ├── SecureTransact.Infrastructure.Tests/
 │   ├── SecureTransact.Api.Tests/
 │   └── SecureTransact.Architecture.Tests/
-├── docs/
-│   ├── architecture/
-│   └── api/
 └── infra/
     ├── terraform/
     ├── docker/
@@ -211,7 +205,7 @@ SecureTransact/
 
 ## Deployment
 
-See [Deployment Guide](docs/guides/deployment.md) for detailed instructions.
+Deployed via GitHub Actions to Azure Container Apps.
 
 ### Azure Container Apps
 
@@ -246,6 +240,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by [MancoMen Software Studio](https://mancomen.com)**
+**Built by [MancoMen Software Studio](https://mancomen.com)**
 
 </div>

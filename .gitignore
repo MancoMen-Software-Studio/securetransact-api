@@ -46,6 +46,10 @@ appsettings.Local.json
 ## Infrastructure secrets
 infra/azure/deploy-dev.sh
 
+## Private documentation
+CLAUDE.md
+docs/
+
 ## OS files
 .DS_Store
 Thumbs.db
