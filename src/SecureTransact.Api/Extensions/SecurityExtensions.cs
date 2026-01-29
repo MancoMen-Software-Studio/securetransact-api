@@ -42,6 +42,8 @@ public static class SecurityExtensions
 
     /// <summary>
     /// Adds security response headers to every request.
+    /// Applies a relaxed CSP for API documentation paths (Scalar/OpenAPI)
+    /// and a strict CSP for all other endpoints.
     /// </summary>
     public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app)
     {
@@ -52,7 +54,23 @@ public static class SecurityExtensions
             context.Response.Headers["X-XSS-Protection"] = "0";
             context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
             context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
-            context.Response.Headers["Content-Security-Policy"] = "default-src 'self'";
+
+            string path = context.Request.Path.Value ?? string.Empty;
+            bool isDocumentationPath = path.StartsWith("/scalar", System.StringComparison.OrdinalIgnoreCase)
+                || path.StartsWith("/openapi", System.StringComparison.OrdinalIgnoreCase);
+
+            if (isDocumentationPath)
+            {
+                context.Response.Headers["Content-Security-Policy"] =
+                    "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+                    "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
+                    "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; " +
+                    "img-src 'self' data: blob:; connect-src 'self'";
+            }
+            else
+            {
+                context.Response.Headers["Content-Security-Policy"] = "default-src 'self'";
+            }
 
             context.Response.Headers.Remove("Server");
             context.Response.Headers.Remove("X-Powered-By");
