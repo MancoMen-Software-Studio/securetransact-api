@@ -25,6 +25,8 @@ public class Program
 
         builder.Services.AddJwtAuthentication(builder.Configuration);
 
+        builder.Services.AddSecurityRateLimiting(builder.Configuration);
+
         builder.Services.AddApplication();
 
         builder.Services.AddInfrastructure(builder.Configuration);
@@ -35,6 +37,8 @@ public class Program
         {
             ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
         });
+
+        app.UseSecurityHeaders();
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
@@ -47,12 +51,13 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseRateLimiter();
+
         app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapHealthEndpoints();
         app.MapTransactionEndpoints();
-
 
         if (app.Environment.IsDevelopment())
         {

@@ -4,8 +4,10 @@ using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SecureTransact.Application.Abstractions;
 using SecureTransact.Domain.Abstractions;
+using SecureTransact.Infrastructure.Caching;
 using SecureTransact.Infrastructure.Cryptography;
 using SecureTransact.Infrastructure.EventStore;
 using SecureTransact.Infrastructure.Persistence;
@@ -81,7 +83,27 @@ public static class DependencyInjection
 
         services.AddScoped<ITransactionRepository, TransactionRepository>();
 
-        services.AddScoped<ITransactionQueryService, TransactionQueryService>();
+        services.AddScoped<TransactionQueryService>();
+
+        string? redisConnection = configuration.GetConnectionString("Redis");
+        if (!string.IsNullOrEmpty(redisConnection))
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = redisConnection;
+                options.InstanceName = "SecureTransact:";
+            });
+
+            services.AddScoped<ITransactionQueryService>(sp =>
+                new CachedTransactionQueryService(
+                    sp.GetRequiredService<TransactionQueryService>(),
+                    sp.GetRequiredService<Microsoft.Extensions.Caching.Distributed.IDistributedCache>(),
+                    sp.GetRequiredService<ILogger<CachedTransactionQueryService>>()));
+        }
+        else
+        {
+            services.AddScoped<ITransactionQueryService, TransactionQueryService>();
+        }
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
