@@ -35,11 +35,24 @@ jobs:
       - name: Run tests
         run: dotnet test --no-build --configuration Release --verbosity normal --settings coverlet.runsettings --results-directory ./coverage
 
+      - name: Debug coverage paths
+        run: |
+          echo "=== Workspace: ${{ github.workspace }} ==="
+          echo "=== Coverage files found: ==="
+          find ./coverage -name "*.xml" -type f
+          echo "=== First coverage file header: ==="
+          FIRST_FILE=$(find ./coverage -name "*.xml" -type f | head -1)
+          head -15 "$FIRST_FILE"
+          echo "=== Sample filenames: ==="
+          grep -m5 'filename=' "$FIRST_FILE"
+
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
         with:
-          directory: ./coverage
-          fail_ci_if_error: false
+          files: ./coverage/**/coverage.cobertura.xml
+          root_dir: ${{ github.workspace }}
+          fail_ci_if_error: true
+          verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
