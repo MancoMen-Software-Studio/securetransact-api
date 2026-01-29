@@ -1,0 +1,19 @@
+codecov:
+  require_ci_to_pass: true
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+    patch:
+      default:
+        target: auto
+
+fixes:
+  - "/home/runner/work/securetransact-api/securetransact-api/::"
+
+ignore:
+  - "tests/**"
+  - "**/obj/**"
+  - "**/bin/**"
