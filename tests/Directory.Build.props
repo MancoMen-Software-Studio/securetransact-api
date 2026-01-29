@@ -1,0 +1,13 @@
+<Project>
+    <!-- Import the root Directory.Build.props -->
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+    <PropertyGroup>
+        <!-- Relax analyzer rules for test projects -->
+        <!-- CA1707: Allow underscores in test method names (common convention) -->
+        <!-- CA1305: Disable culture-specific formatting warnings in tests -->
+        <!-- CA1062: Disable null argument validation in tests (tests control inputs) -->
+        <!-- CA1806: Disable unused object creation warning in tests (used for throw assertions) -->
+        <NoWarn>$(NoWarn);CA1707;CA1305;CA1062;CA1806</NoWarn>
+    </PropertyGroup>
+</Project>

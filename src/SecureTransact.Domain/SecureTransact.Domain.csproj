@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>SecureTransact.Domain</RootNamespace>
+    <AssemblyName>SecureTransact.Domain</AssemblyName>
+    <Description>Domain layer containing aggregates, entities, value objects, and domain events. Zero external dependencies.</Description>
+  </PropertyGroup>
+
+  <!-- Domain layer has NO external package references - only .NET BCL -->
+
+</Project>

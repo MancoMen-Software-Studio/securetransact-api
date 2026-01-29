@@ -1,0 +1,39 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Build outputs
+**/bin
+**/obj
+**/out
+
+# Test results
+**/TestResults
+**/coverage
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Local development
+.env
+.env.*
+*.local
+appsettings.Development.json
+appsettings.*.local.json
+
+# Infrastructure
+infra/
+.github/
+
+# Misc
+.DS_Store
+Thumbs.db
+*.log

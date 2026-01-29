@@ -1,0 +1,14 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "SecureTransact DB",
+            "Group": "Servers",
+            "Host": "postgres",
+            "Port": 5432,
+            "MaintenanceDB": "securetransact",
+            "Username": "securetransact",
+            "SSLMode": "prefer",
+            "PassFile": "/tmp/pgpassfile"
+        }
+    }
+}
