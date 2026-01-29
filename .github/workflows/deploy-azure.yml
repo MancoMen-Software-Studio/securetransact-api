@@ -98,12 +98,16 @@ jobs:
         run: |
           echo "login-server=$(az acr show --name ${{ env.ACR_NAME }} --query loginServer -o tsv)" >> $GITHUB_OUTPUT
 
+      - name: Get short SHA
+        id: sha
+        run: echo "short=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
+
       - name: Deploy to Container Apps
         uses: azure/container-apps-deploy-action@v2
         with:
           resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
           containerAppName: ${{ env.CONTAINER_APP_NAME }}
-          imageToDeploy: ${{ steps.acr.outputs.login-server }}/securetransact-api:${{ github.sha }}
+          imageToDeploy: ${{ steps.acr.outputs.login-server }}/securetransact-api:${{ steps.sha.outputs.short }}
 
       - name: Get App URL
         id: app-url
